@@ -1,0 +1,12 @@
+﻿@import "../lib/bootstrap/scss/bootstrap.scss";
+@import "variables";
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - #{$header-height});
+}
+
+.spacer {
+    flex: 1;
+}

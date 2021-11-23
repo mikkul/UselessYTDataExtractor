@@ -1,0 +1,63 @@
+﻿@page
+@model UselessYoutubeDataExtractor.Pages.IndexModel
+@{
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <link href="/css/index.css" rel="stylesheet" />
+}
+
+<div class="wrapper">
+    <div class="container">
+        <div class="row justify-content-center align-items-center mt-5">
+            <div class="col-6 col-md-5 order-md-1 mb-3">
+                <img src="~/svg/logo_release.svg" id="top-logo" />
+            </div>
+            <div class="col-12 col-md-7 order-md-0 text-center text-md-start">
+                <h1>Generate some useless but fun data about YouTube videos.</h1>
+                <p id="intro">
+                    To begin, simple paste a video URL of your choice into the specified area above and click the <em>Extract data</em> button. The processing may take a while if you're the first one to enter a video. Videos with larger number of comments will take longer to process. After it's done it will take you to a new page showing the results. Enjoy!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="input-section">
+        <div class="d-flex flex-column align-items-center justify-content-center position-relative">
+            <div class="col-12 d-flex mb-1">
+                <div>
+                    <strong>Enter video URL</strong>
+                </div>
+                <div class="ms-auto">
+                    <small class="ms-auto">(Click <a href="/Results/5Abd76kaHR4">here</a> to see an example)</small>
+                </div>
+            </div>
+            <form id="input-form" method="post" class="col-12">
+                <input class="form-control" type="url" asp-for="VideoUrl" />
+            </form>
+            <div id="submit-button-container" class="mt-2">
+                <input type="submit" id="extract-data-button" form="input-form" value="Extract data" />
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty((string)TempData["ErrorMessage"]))
+        {
+            <div id="error-alert" class="alert alert-danger alert-dismissible mt-3">
+                <span>@TempData["ErrorMessage"]</span>
+                <button class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+    </div>
+    <div class="spacer"></div>
+    <component type="typeof(UselessYoutubeDataExtractor.Components.Footer)" render-mode="Static" />
+</div>
+
+@section Scripts
+{
+<script>
+    $('#home-nav-link').addClass('active');
+
+    keepScrollPositionOnReload(window);
+</script>
+}

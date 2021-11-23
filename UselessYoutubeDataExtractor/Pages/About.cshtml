@@ -1,0 +1,25 @@
+﻿@page
+@model UselessYoutubeDataExtractor.Pages.AboutModel
+@{
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <link href="~/css/about.css" rel="stylesheet" />
+}
+
+<div class="wrapper">
+    <div class="content">
+
+    </div>
+    <div class="spacer"></div>
+    <component type="typeof(UselessYoutubeDataExtractor.Components.Footer)" render-mode="Static" />
+</div>
+
+@section Scripts
+{
+<script>
+    $('#about-nav-link').addClass('active');
+</script>
+}

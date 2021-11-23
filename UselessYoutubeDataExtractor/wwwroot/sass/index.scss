@@ -1,0 +1,51 @@
+﻿@import "../lib/bootstrap/scss/bootstrap.scss";
+@import "variables";
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - #{$header-height});
+}
+
+.spacer {
+    flex: 1;
+}
+
+#extract-data-button {
+    border: 0;
+    border-radius: 5rem 5rem !important;
+    background-color: #ffffff;
+    padding: 0.6rem 1.2rem 0.6rem 1.2rem;
+}
+
+#extract-data-button:hover {
+    background-color: #e5e5e5
+}
+
+#extract-data-button:active {
+    background-color: #cecece;
+}
+
+#github-logo {
+    height: 3rem;
+}
+
+.bottom-link {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#intro {
+    font-weight: 400;
+    font-size: calc(1.15rem + 0.3vw);
+}
+
+#top-logo {
+    width: 100%;
+    height: auto;
+}
+
+#input-section {
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+}

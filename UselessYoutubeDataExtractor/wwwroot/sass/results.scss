@@ -1,0 +1,83 @@
+﻿@import "../lib/bootstrap/scss/bootstrap.scss";
+@import "variables";
+
+body {
+    overflow-y: hidden;
+}
+
+#wrapper {
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    overflow-y: scroll;
+    height: calc(100vh - #{$header-height});
+}
+
+section {
+    scroll-snap-align: start;
+    position: relative;
+    padding: 2rem 0;
+    min-height: calc(100vh - #{$header-height});
+}
+
+section.no-scroll-snap {
+    scroll-snap-align: none;
+}
+
+#video-thumbnail {
+    max-width: 100%;
+    height: auto;
+}
+
+#like-percentage-bar {
+    background-color: #16a800;
+}
+
+#dislike-percentage-bar {
+    background-color: #d40a0a;
+}
+
+.section-scroll {
+    height: fit-content;
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin: 0 auto 0 auto;
+    color: #cccccc;
+}
+
+/*.section-scroll button {
+    visibility: hidden;
+}
+
+.section-scroll:hover button {
+    visibility: visible;
+}*/
+
+.scroll-icon {
+    font-size: 5rem;
+}
+
+.button-nostyle {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.comment-content-container {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border: 1px solid #b2b2b2;
+    background-color: #eeeeee;
+    box-shadow: rgb(0 0 0 / 0.56) 2px 2px;
+}
+
+#refresh-statistical-comment-button-container {
+    max-width: 5.1rem !important;
+}
+
+#statitical-comment-info-button-container {
+    max-width: 4rem !important;
+}

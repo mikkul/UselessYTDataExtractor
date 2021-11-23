@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignore client-side libraries
+/UselessYoutubeDataExtractor/wwwroot/lib/
+
+# Ignore the css files folder, because they are being compiled from sass files
+/UselessYoutubeDataExtractor/wwwroot/css/

@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+    @*<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />*@
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header class="navbar navbar-expand-md navbar-dark" id="top-navbar">
+        <nav class="container-lg">
+            <a class="navbar-brand" href="/">
+                <img src="~/svg/icon_release.svg" height="35" />
+            </a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#header-content">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="header-content">
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item col-6">
+                        <a class="nav-link" id="home-nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item col-6">
+                        <a class="nav-link" id="about-nav-link" href="/About">About</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav flex-row ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/mikkul/UselessYoutubeDataExtractor" rel="noreferrer" target="_blank" >
+                            <img src="~/img/GitHub-Mark-Light-32px.png" height="24" />
+                            <small class="d-md-none ms-2">GitHub</small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    @RenderBody()
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/scroll_utility.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

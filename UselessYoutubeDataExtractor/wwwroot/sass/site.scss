@@ -1,0 +1,29 @@
+﻿@import "variables";
+
+body {
+    background-color: #d7edff !important;
+}
+
+header {
+    background-color: #2d8ee1;
+    min-height: $header-height;
+}
+
+#header-content .nav-link {
+    color: #ffffff;
+}
+
+#header-content .nav-link.active {
+    font-weight: 600;
+}
+
+footer {
+    background-color: #cfe6f8;
+    min-height: 10rem;
+    width: 100%;
+}
+
+footer a {
+    color: #484848;
+    text-decoration: none;
+}

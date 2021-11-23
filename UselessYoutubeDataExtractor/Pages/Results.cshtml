@@ -1,0 +1,313 @@
+﻿@page "{videoId}"
+@using Utility;
+@model UselessYoutubeDataExtractor.Pages.ResultsModel
+@{
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <link href="/css/results.css" rel="stylesheet" />
+}
+
+<div id="wrapper">
+    <section class="no-scroll-snap">
+        <div class="container">
+            <div class="row align-items-center" id="top-panel">
+                <div class="col-md-5 col-8 order-md-2 mx-auto">
+                    <img src="@Model.VideoData.ThumbnailUrl" id="video-thumbnail" />
+                </div>
+                <div class="col-md-7 text-center text-md-start">
+                    <div id="video-title-container">
+                        <h1>Useless data extracted for</h1>
+                        <h2>
+                            <a href="http://youtube.com/watch?v=@Model.VideoId">@Model.VideoData.Title</a>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            @*<p class="data-paragraph" id="title-length">
+                The video title is <strong>@Model.TitleLengthRatioToAverage</strong> times
+                <strong>
+                    @(Model.IsTitleLongerThanAverage ? "longer" : "shorter")
+                </strong>
+                than the average video posted on this site
+            </p>*@
+
+            <div class="data-paragraph" id="like-dislike-ratio">
+                <div class="mb-1">
+                    <strong>@Model.LikeToDislikeRatio</strong> times more people
+                    <strong>@(Model.MorePeopleLikedTheVideo ? "liked" : "disliked")</strong>
+                    this video than
+                    <strong>@(Model.MorePeopleLikedTheVideo ? "disliked" : "liked")</strong>
+                </div>
+                <div class="progress" id="like-to-dislike-bar">
+                    <div class="progress-bar" id="like-percentage-bar" style="width: @Model.PercentageLikes.ToPercentageString()">
+                        @Model.VideoData.LikeCount
+                    </div>
+                    <div class="progress-bar" id="dislike-percentage-bar" style="width: @Model.PercentageDislikes.ToPercentageString()">
+                        @Model.VideoData.DislikeCount
+                    </div>
+                </div>
+            </div>
+
+            <p class="data-paragraph" id="average-comment-data">
+                On average each commment was made of
+                <strong>
+                    <abbr title="@Model.AverageWordCount">@Math.Round(Model.AverageWordCount)</abbr> words
+                </strong>
+                , received
+                <strong>
+                    <abbr title="@Model.AverageLikesPerComment">@Math.Round(Model.AverageLikesPerComment)</abbr> likes
+                </strong>
+                and
+                <strong>
+                    <abbr title="@Model.AverageRepliesPerComment">@Math.Round(Model.AverageRepliesPerComment)</abbr> replies.
+                </strong>
+            </p>
+
+            <div class="data-paragraph" id="statistical-comment">
+                <div class="mb-2">
+                    A statistical comment could look like this:
+                </div>
+                <div class="row align-items-md-center justify-content-start" id="statistical-comment-container">
+                    <div class="col" id="refresh-statistical-comment-button-container">
+                        <button class="btn btn-primary" id="refresh-statistical-comment-button">Refresh</button>
+                    </div>
+                    <div class="col" id="statitical-comment-info-button-container">
+                        <button class="btn btn-info">
+                            <i class="fas fa-question text-white"></i>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-9 mb-2 mb-md-0 order-first order-md-last" id="statistical-comment-content-container">
+                        <div class="comment-content-container">
+                            <p id="statistical-comment-text">@Model.StatisticalCommentPossibleContent[0]</p>
+                            <div>
+                                <i class="fas fa-thumbs-up"></i>
+                                <span id="statistical-comment-like-count">@Math.Round(Model.AverageLikesPerComment)</span>
+                                <i class="fas fa-thumbs-down fa-flip-horizontal"></i>
+                                <span class="ms-4 me-4"></span>
+                                <span id="statistical-comment-reply-count">@Math.Round(Model.AverageRepliesPerComment)</span> replies
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-next-section-button">
+                <i class="fas fa-angle-down scroll-icon"></i>
+            </button>
+        </div>
+    </section>
+    <section class="container d-flex flex-column justify-content-between">
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-previous-section-button">
+                <i class="fas fa-angle-up scroll-icon"></i>
+            </button>
+        </div>
+        <div class="data-paragraph row align-items-center" id="comment-length-like-ratio">
+            <div class="col-md-6 mb-2 text-center text-md-start">
+                This graph shows the relationship between a comment's length and the number of likes it received.
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <canvas id="commentLengthLikesChart" width="45" height="40"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-next-section-button">
+                <i class="fas fa-angle-down scroll-icon"></i>
+            </button>
+        </div>
+    </section>
+    <section class="container d-flex flex-column justify-content-between">
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-previous-section-button">
+                <i class="fas fa-angle-up scroll-icon"></i>
+            </button>
+        </div>
+        <div class="data-paragraph row align-items-center" id="most-common-words">
+            <div class="col-md-6 order-0 order-md-1 mb-2 text-center text-md-start">
+                This chart shows the most commonly used words in comments. We excluded the most popular English words such as <i>the</i>, <i>it</i>, <i>this</i>, <i>you</i>, etc.
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <canvas id="mostCommonWordsChart" width="45" height="55"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-next-section-button">
+                <i class="fas fa-angle-down scroll-icon"></i>
+            </button>
+        </div>
+    </section>
+    <section class="container">
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-previous-section-button">
+                <i class="fas fa-angle-up scroll-icon"></i>
+            </button>
+        </div>
+        <div class="data-paragraph row align-items-center" id="most-liked-words">
+            <div class="col-md-6 mb-2 text-center text-md-start">
+                Here are some of the words in which comments received the most likes.
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <canvas id="mostLikedWordsChart" width="45" height="55"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-next-section-button">
+                <i class="fas fa-angle-down scroll-icon"></i>
+            </button>
+        </div>
+    </section>
+    <section class="container">
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-previous-section-button">
+                <i class="fas fa-angle-up scroll-icon"></i>
+            </button>
+        </div>
+        <div class="data-paragraph row align-items-center" id="most-replied-words">
+            <div class="col-md-6 order-0 order-md-1 mb-2 text-center text-md-start">
+                And words which triggered the most replies.
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <canvas id="mostRepliedWordsChart" width="45" height="55"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-next-section-button">
+                <i class="fas fa-angle-down scroll-icon"></i>
+            </button>
+        </div>
+    </section>
+    <section class="container">
+        <div class="section-scroll">
+            <button class="button-nostyle scroll-to-previous-section-button">
+                <i class="fas fa-angle-up scroll-icon"></i>
+            </button>
+        </div>
+        <div class="data-paragraph" id="randomly-generated-comments">
+            Here are some randomly generated comments created using the comment section as the training data. See more info <a href="/About#randomly-generated-comments">here</a>
+
+            @foreach (var comment in Model.RandomlyGeneratedComments)
+            {
+                <div class="col comment-content-container mt-2">
+                    <div>
+                        <p>@comment.Content</p>
+                        <div>
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>@comment.LikeCount</span>
+                            <i class="fas fa-thumbs-down fa-flip-horizontal"></i>
+                            <span class="ms-4 me-4"></span>
+                            <span>@comment.ReplyCount</span> replies
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <component type="typeof(UselessYoutubeDataExtractor.Components.Footer)" render-mode="Static" />
+</div>
+
+@section Scripts
+{
+    <script src="https://kit.fontawesome.com/6b2f38b5d6.js" crossorigin="anonymous"></script>
+    <script src="~/lib/Chart.js/Chart.js"></script>
+    <script>
+        @Html.Raw(Model.CommentLengthLikesChart.CreateChartCode("commentLengthLikesChart"))
+        @Html.Raw(Model.MostCommonWordsChart.CreateChartCode("mostCommonWordsChart"))
+        @Html.Raw(Model.MostLikedWordsChart.CreateChartCode("mostLikedWordsChart"))
+        @Html.Raw(Model.MostRepliedWordsChart.CreateChartCode("mostRepliedWordsChart"))
+
+        @*createChart('comment-length-likes-chart', 'commentLengthLikes');
+        createChart('most-common-words-chart', 'mostCommonWords');
+
+        function createChart(chartCanvasId, chartName) {
+            var chartData = getChartData(chartName);
+            var ctx = document.getElementById(chartCanvasId).getContext('2d');
+            var chart = new Chart(ctx, chartData);
+            return chart;
+        }
+
+        function getChartData(chartName) {
+            var response;
+            $.ajax({
+                type: 'GET',
+                url: `/Charts/@Model.VideoId/${chartName}`,
+                async: false,
+                contentType: 'application/json',
+                success: function (data) {
+                    response = data;
+                },
+                error: function (response) {
+                    console.log(response.responseText);
+                }
+            });
+            return response;
+        }*@
+    </script>
+    <script>
+        var statisticalCommentContentIndex = 0;
+        var possibleStatisticalCommentContent = @Html.Raw(Json.Serialize(Model.StatisticalCommentPossibleContent));
+        $('#refresh-statistical-comment-button').click(function () {
+            statisticalCommentContentIndex++;
+            if (statisticalCommentContentIndex >= possibleStatisticalCommentContent.length) {
+                statisticalCommentContentIndex = 0;
+            }
+            var content = possibleStatisticalCommentContent[statisticalCommentContentIndex];
+            $('#statistical-comment-text').html(content);
+        });
+    </script>
+    <script>
+        $('.scroll-to-next-section-button').click(function () {
+            var scrollTop = document.getElementById('wrapper').scrollTop;
+            var header = document.getElementById('top-navbar');
+            scrollTop += header.offsetHeight;
+
+            var sectionPositions = [];
+            document.querySelectorAll('section').forEach(function (section) {
+                sectionPositions.push(section.offsetTop);
+            });
+            nearestScrollPosition = sectionPositions.find(x => x > scrollTop);
+            nearestScrollPosition -= header.offsetHeight;
+
+            document.getElementById('wrapper').scrollTo({
+                top: nearestScrollPosition,
+                behavior: 'smooth'
+            });
+        });
+        $('.scroll-to-previous-section-button').click(function () {
+            var scrollTop = document.getElementById('wrapper').scrollTop;
+            var header = document.getElementById('top-navbar');
+            scrollTop += header.offsetHeight;
+
+            var sectionPositions = [];
+            document.querySelectorAll('section').forEach(function (section) {
+                sectionPositions.push(section.offsetTop);
+            });
+            nearestScrollPosition = sectionPositions.filter(x => x < scrollTop).pop();
+            nearestScrollPosition -= header.offsetHeight;
+
+            document.getElementById('wrapper').scrollTo({
+                top: nearestScrollPosition,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+    <script>
+        keepScrollPositionOnReload(document.getElementById('wrapper'));
+    </script>
+}
