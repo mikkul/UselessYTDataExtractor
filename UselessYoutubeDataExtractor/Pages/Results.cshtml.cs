@@ -101,7 +101,7 @@ namespace UselessYoutubeDataExtractor.Pages
 			VideoData.Title = video.Snippet.Title;
 			VideoData.ThumbnailUrl = video.Snippet.Thumbnails.Maxres.Url;
 			VideoData.LikeCount = (int)video.Statistics.LikeCount;
-			VideoData.DislikeCount = (int)video.Statistics.DislikeCount;
+			//VideoData.DislikeCount = (int)video.Statistics.DislikeCount;
 
 			var commentThreadsListRequest = youtubeService.CommentThreads.List("snippet");
 			commentThreadsListRequest.VideoId = VideoId;
